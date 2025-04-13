@@ -1,8 +1,8 @@
 <?php
-$servername = ""; // Database server name
-$username = "";  // Database username
-$password = "";  // Database password
-$dbname = "";   // Database name
+$servername = "148.251.246.9";
+$username = "exnet8_telesto";
+$password = "Sqa1214WEQ";
+$dbname = "exnet8_telesto";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);

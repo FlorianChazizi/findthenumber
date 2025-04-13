@@ -27,7 +27,7 @@ include 'backend/fetch_annoying.php';
         <div class="header-wrapper">
             <div class="header-bg">
                 <div class="header">
-                    <img src="assets/searchLogo.svg" alt="Logo" class="logo">
+                    <a href="index.php"><img src="assets/searchLogo.svg" alt="Logo" class="logo"></a>
                     <form method="POST" action="" class="search-wrapper">
                         <input class="searchBar" inputmode="numeric" pattern="[0-9]*" type="text" name="number"
                             placeholder="Search a number" required>
@@ -39,8 +39,6 @@ include 'backend/fetch_annoying.php';
             </div>
         </div>
     </div>
-
-
 
     <!-- Body -->
     <div class="main-wrapper">
@@ -91,6 +89,8 @@ include 'backend/fetch_annoying.php';
                 <p>No recent reviews found.</p>
             <?php endif; ?>
         </div>
+
+        
         <!-- Sidebar -->
         <div class="sidebar">
             <h2 class="side-header">Ενοχλητικοί Αριθμοί</h2>
@@ -126,7 +126,6 @@ include 'backend/fetch_annoying.php';
                 <p>No dangerous numbers found yet.</p>
             <?php endif; ?>
         </div>
-    </div>
     </div>
     </div>
 

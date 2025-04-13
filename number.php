@@ -1,48 +1,176 @@
 <?php
 include 'db_config.php';
+include 'backend/number_data.php';
+include 'backend/fetch_dangerous.php';
+include 'backend/fetch_annoying.php';
+include 'helpers/calculate_danger_rate.php';
+include 'helpers/get_review_count.php';
+include 'helpers/get_last_review_date.php';
 
-if (!isset($_GET['number'])) {
-    die("Number not specified.");
-}
+$dangerRate = getDangerRate($conn, $number);
+$reviewCount = getReviewCount($conn, $number);
+$lastReviewDate = getLastReviewDate($conn, $number);
 
-$number = $_GET['number'];
-$currentTimestamp = date('Y-m-d H:i:s');
 
-// Update views and last_time_viewed
-$stmt = $conn->prepare("UPDATE numbers SET views = views + 1, last_time_viewed = ? WHERE number = ?");
-$stmt->bind_param("si", $currentTimestamp, $number);
-$stmt->execute();
-$stmt->close();
-
-// Fetch number details
-$stmt = $conn->prepare("SELECT * FROM numbers WHERE number = ?");
-$stmt->bind_param("i", $number);
-$stmt->execute();
-$result = $stmt->get_result();
-$data = $result->fetch_assoc();
-$stmt->close();
-
-if (!$data) {
-    die("Number not found.");
-}
 ?>
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Number <?php echo htmlspecialchars($number); ?></title>
     <link rel="stylesheet" href="styles/number.css">
+    <link rel="stylesheet" href="styles/index.css">
 
 </head>
+
 <body>
+    <!-- Header -->
+    <div class="body-content">
+        <div class="header-wrapper">
+            <div class="header-bg">
+                <div class="header">
+                    <a href="index.php"><img src="assets/searchLogo.svg" alt="Logo" class="logo"></a>
+                    <form method="POST" action="" class="search-wrapper">
+                        <input class="searchBar" inputmode="numeric" pattern="[0-9]*" type="text" name="number"
+                            placeholder="Search a number" required>
+                        <button type="submit" class="searchButton">
+                            <img src="assets/search-icon.svg" class="searchIcon" alt="Search" class="search-icon">
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Number display -->
+    <div class="title-container">
+        <h2 class='title-h2'>Αριθμός τηλεφώνου:
+            <span class='title-span'>
+                <?php echo htmlspecialchars($data['number']); ?>
+            </span>
+        </h2>
+    </div>
+
+
+    <!-- body -->
+    <div class="main-wrapper">
+        <!-- statistics -->
+        <div class="content statistics">
+            <h2 class="body-title">
+                Στατιστικά
+            </h2>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class='t-title' colspan="2">Αξιολόγηση</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Βαθμός του κινδύνου:</td>
+                        <td>
+                            <?php if ($dangerRate === null): ?>
+                                <span class="danger-rate no-data">Χωρίς δεδομένα</span>
+                            <?php else: ?>
+                                <span class="danger-rate">
+                                    <?php echo $dangerRate; ?>%
+                                </span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Αριθμός αξιολογήσεων:</td>
+                        <td>
+                            <?php echo $reviewCount; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Τελευταία αξιολόγηση:</td>
+                        <td class='t-td-cta'>
+                            <?php echo $lastReviewDate ? date("d/m/Y H:i", strtotime($lastReviewDate)) : 'Δεν υπάρχουν ακόμα αξιολογήσεις'; ?>
+
+                            <a href='#comment'><span class=' t-cta'>Προσθέστε ένα σχόλιο</span></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class='t-title-2' colspan="2">Εμφανίσεις</th>
+                    </tr>
+                    <tr>
+                        <td>Αριθμός εμφανίσεων:</td>
+                        <td>
+                            <?php echo $data['views']; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Τελευταία εμφάνιση:</td>
+                        <td>
+                            <?php echo $data['last_time_viewed']; ?>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+        <!-- add sidebar -->
+        <div class="sidebar">
+            <h2 class="side-header">Ενοχλητικοί Αριθμοί</h2>
+            <?php if ($annoyingResult && $annoyingResult->num_rows > 0): ?>
+                <?php while ($row = $annoyingResult->fetch_assoc()): ?>
+                    <div class="instances">
+                        <strong>
+                            <a class="arithmos" href="number.php?number=<?php echo urlencode($row['number']); ?>">
+                                <?php echo htmlspecialchars($row['number']); ?> </a>
+                        </strong>
+                        <p class="desc"><?php echo htmlspecialchars($row['comment']); ?></p>
+                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p>No annoying numbers found yet.</p>
+            <?php endif; ?>
+            <h2 class="side-header">Επικίνδυνοι αριθμοί </h2>
+            <?php if ($dangerousResult && $dangerousResult->num_rows > 0): ?>
+                <?php while ($row = $dangerousResult->fetch_assoc()): ?>
+                    <div class="instances">
+                        <strong>
+                            <a class="arithmos" href="number.php?number=<?php echo urlencode($row['number']); ?>">
+                                <?php echo htmlspecialchars($row['number']); ?>
+                            </a>
+                        </strong>
+                        <p class="desc"><?php echo htmlspecialchars($row['comment']); ?></p>
+                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p>No dangerous numbers found yet.</p>
+            <?php endif; ?>
+        </div>
+
+
+    </div>
+
+
+    <!-- add comment -->
+    <div>
+        <p> Here we add a comment</p>
+    </div>
+    <!-- comment list -->
+    <div>
+        <p> here we display the comments </p>
+    </div>
+
+    <!-- 
     <h1>Number: <?php echo htmlspecialchars($data['number']); ?></h1>
     <p><strong>Views:</strong> <?php echo $data['views']; ?></p>
     <p><strong>Created At:</strong> <?php echo $data['created_at']; ?></p>
     <p><strong>Updated At:</strong> <?php echo $data['updated_at']; ?></p>
     <p><strong>Last Time Viewed:</strong> <?php echo $data['last_time_viewed']; ?></p>
     <p><strong>Last Review:</strong> <?php echo $data['last_review'] ?: 'Never'; ?></p>
+   -->
     <a href="index.php">← Back</a>
 </body>
+
 </html>
 
 <?php $conn->close(); ?>
