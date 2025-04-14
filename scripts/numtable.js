@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <tr>
           <td><a href="number.php?number=${item.number}">${item.number}</a></td>
           <td><span>${item.views} 👁️</span></td>
-          <td><a href="numbers/${item.number}">${item.number}</a></td>
+          <td><a href="numbers${item.number}">${item.number}</a></td>
           <td><span>${item.comments} 💬</span></td>
         </tr>
       `).join('');
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return `
         <div class="number-list">
           ${data.map(num => `
-            <a href="number?number=/${num.number}" class="pill">${num.number}</a>
+            <a href="number.php?number=${num.number}" class="pill">${num.number}</a>
           `).join('')}
         </div>
       `;
