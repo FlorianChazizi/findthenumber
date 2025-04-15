@@ -21,7 +21,7 @@ $lastReviewDate = getLastReviewDate($conn, $number);
     <title>Number <?php echo htmlspecialchars($number); ?></title>
     <link rel="stylesheet" href="styles/number.css">
     <link rel="stylesheet" href="styles/index.css">
-
+    <script defer src="scripts/radiobuttons.js"></script>
 </head>
 
 <body>
@@ -147,14 +147,65 @@ $lastReviewDate = getLastReviewDate($conn, $number);
             <?php endif; ?>
         </div>
 
-
-    </div>
-
-
     <!-- add comment -->
-    <div>
-        <p> Here we add a comment</p>
+    <div class="comment">
+    <div class="form-container">
+        <h2 class="form-title">Προσθήκη ενός σχολίου</h2>
+        <div class="form">
+            <form class="form-content" id="commentForm" method="POST">
+                <div class="form-columns">
+                    <div class="column-1">
+                        <textarea
+                            class="txtarea"
+                            maxlength="200"
+                            rows="8"
+                            placeholder="Η εμπειρία σας με τον αριθμό <?php echo $number; ?>..."
+                            name="comment"
+                        ></textarea>
+                    </div>
+                    <div class="column-2">
+                        <div class="select-wrapper" id="rankOptions">
+                            <?php
+                            $rankOptions = [
+                                ['label' => 'Χρήσιμος', 'value' => 'useful', 'color' => '#23b54f'],
+                                ['label' => 'Ασφαλής', 'value' => 'safe', 'color' => '#4d9981'],
+                                ['label' => 'Ουδέτερος', 'value' => 'neutral', 'color' => '#169dc4'],
+                                ['label' => 'Ενοχλητικός', 'value' => 'annoying', 'color' => '#e6523e'],
+                                ['label' => 'Επικίνδυνος', 'value' => 'dangerous', 'color' => '#af1c6b'],
+                            ];
+                            foreach ($rankOptions as $index => $option) {
+                                $selected = $option['value'] === 'useful' ? 'selected' : '';
+                                echo "
+                                <div class='rank-wrapper-1 $selected' data-color='{$option['color']}' data-value='{$option['value']}'>
+                                    <label class='rank-1'>{$option['label']}</label>
+                                    <input 
+                                        name='rank' 
+                                        type='radio' 
+                                        class='rank' 
+                                        value='{$option['value']}'
+                                        " . ($selected ? "checked" : "") . "
+                                    >
+                                </div>
+                                ";
+                            }
+                            ?>
+                        </div>
+
+                        <button 
+                            type="submit"
+                            class="submit-button"
+                            disabled
+                        >Υποβολή</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
+</div> 
+    </div>
+
+
+
     <!-- comment list -->
     <div>
         <p> here we display the comments </p>
