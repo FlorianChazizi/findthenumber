@@ -6,6 +6,7 @@ include 'backend/fetch_annoying.php';
 include 'helpers/calculate_danger_rate.php';
 include 'helpers/get_review_count.php';
 include 'helpers/get_last_review_date.php';
+include 'backend/post_comments.php';
 
 $dangerRate = getDangerRate($conn, $number);
 $reviewCount = getReviewCount($conn, $number);
@@ -19,9 +20,10 @@ $lastReviewDate = getLastReviewDate($conn, $number);
 
 <head>
     <title>Number <?php echo htmlspecialchars($number); ?></title>
+    <script defer src="scripts/radiobuttons.js"></script>
+
     <link rel="stylesheet" href="styles/number.css">
     <link rel="stylesheet" href="styles/index.css">
-    <script defer src="scripts/radiobuttons.js"></script>
 </head>
 
 <body>
@@ -91,7 +93,7 @@ $lastReviewDate = getLastReviewDate($conn, $number);
                         <td class='t-td-cta'>
                             <?php echo $lastReviewDate ? date("d/m/Y H:i", strtotime($lastReviewDate)) : 'Δεν υπάρχουν ακόμα αξιολογήσεις'; ?>
 
-                            <a href='#comment'><span class=' t-cta'>Προσθέστε ένα σχόλιο</span></a>
+                            <a href='#commentForm'><span class=' t-cta'>Προσθέστε ένα σχόλιο</span></a>
                         </td>
                     </tr>
                     <tr>
@@ -152,11 +154,14 @@ $lastReviewDate = getLastReviewDate($conn, $number);
     <div class="form-container">
         <h2 class="form-title">Προσθήκη ενός σχολίου</h2>
         <div class="form">
-            <form class="form-content" id="commentForm" method="POST">
+            <form class="form-content" id="commentForm"  method="POST">
                 <div class="form-columns">
                     <div class="column-1">
+                            <input type="hidden" name="id" value="<?php echo htmlspecialchars($data['id']); ?>">
+
                         <textarea
                             class="txtarea"
+                            id="txtarea"
                             maxlength="200"
                             rows="8"
                             placeholder="Η εμπειρία σας με τον αριθμό <?php echo $number; ?>..."
@@ -176,12 +181,13 @@ $lastReviewDate = getLastReviewDate($conn, $number);
                             foreach ($rankOptions as $index => $option) {
                                 $selected = $option['value'] === 'useful' ? 'selected' : '';
                                 echo "
-                                <div class='rank-wrapper-1 $selected' data-color='{$option['color']}' data-value='{$option['value']}'>
+                                <div class='rank-wrapper-1 $selected' id='rank-wrapper-1' data-color='{$option['color']}' data-value='{$option['value']}'>
                                     <label class='rank-1'>{$option['label']}</label>
                                     <input 
                                         name='rank' 
                                         type='radio' 
-                                        class='rank' 
+                                        class='rank'
+                                        id='rank' 
                                         value='{$option['value']}'
                                         " . ($selected ? "checked" : "") . "
                                     >
@@ -211,14 +217,15 @@ $lastReviewDate = getLastReviewDate($conn, $number);
         <p> here we display the comments </p>
     </div>
 
-    <!-- 
+    
     <h1>Number: <?php echo htmlspecialchars($data['number']); ?></h1>
+    <h2> ID of the number : <?php echo htmlspecialchars($data['id']); ?></h2>
     <p><strong>Views:</strong> <?php echo $data['views']; ?></p>
     <p><strong>Created At:</strong> <?php echo $data['created_at']; ?></p>
     <p><strong>Updated At:</strong> <?php echo $data['updated_at']; ?></p>
     <p><strong>Last Time Viewed:</strong> <?php echo $data['last_time_viewed']; ?></p>
     <p><strong>Last Review:</strong> <?php echo $data['last_review'] ?: 'Never'; ?></p>
-   -->
+  
     <a href="index.php">← Back</a>
 </body>
 

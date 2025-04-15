@@ -126,6 +126,7 @@ td{
     font-weight: 600;
     padding: 1rem;
     color: #181819;
+    margin-block-end: 0em;
 }
 .form {
     padding: 1rem;
