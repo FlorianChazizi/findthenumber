@@ -270,7 +270,7 @@ span {
 .rank-safe {
     background-color: #2ecc71;
     /* yellow */
-    color: rgb(4, 2, 2);
+    color: rgb(255, 255, 255);
 }
 
 .rank-neutral {

@@ -1,9 +1,10 @@
-.title-container{
+.title-container {
     display: flex;
     justify-content: center;
 
 }
-.title-h2{
+
+.title-h2 {
     font-size: 2rem;
     line-height: 1.3;
     color: #181819;
@@ -13,7 +14,8 @@
     padding: 1.5rem 0;
     font-family: Arial, sans-serif;
 }
-.title-span{
+
+.title-span {
     background-color: #ffdf61;
     color: #181819;
     font-weight: 700;
@@ -22,23 +24,25 @@
 }
 
 @media (max-width: 768px) {
-    .title-h2{
+    .title-h2 {
         font-size: 2.4rem;
     }
-    .title-span{
+
+    .title-span {
         font-size: 1.6rem;
     }
 }
 
 /* statistics */
-.body-title{
+.body-title {
     font-size: 2rem;
     font-family: Arial, sans-serif;
     font-weight: 700;
     color: #181819;
     margin-bottom: 2rem;
 }
-.table{
+
+.table {
     width: 100%;
     font-size: 0.8rem;
     background-color: white;
@@ -48,28 +52,34 @@
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
 }
-.t-title{
+
+.t-title {
     text-align: left;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
 }
-.t-title-2{
+
+.t-title-2 {
     text-align: left;
 }
-th{
+
+th {
     padding: 1rem;
     border-bottom: 1px solid rgba(228, 230, 234, 1);
     background-color: rgb(210, 210, 210);
 }
-td{
+
+td {
     padding: 1rem;
     border-bottom: 1px solid rgb(228 230 234 / .4);
 }
-.t-td-cta{
+
+.t-td-cta {
     display: flex;
     justify-content: space-between;
 }
-.t-cta{
+
+.t-cta {
     position: relative;
     justify-content: center;
     align-items: right;
@@ -84,27 +94,33 @@ td{
     border-radius: 12px;
     cursor: pointer;
 }
-.t-cta:hover{
+
+.t-cta:hover {
     background: #697a89;
     color: #fff;
 }
+
 @media (max-width: 768px) {
-    .table{
+    .table {
         width: 100%;
     }
-    .t-cta{
+
+    .t-cta {
         padding: 4px 8px;
         font-size: 0.7rem;
     }
-    th{
+
+    th {
         padding: 0.5rem;
     }
-    td{
+
+    td {
         padding: 0.5rem;
     }
 }
+
 @media (max-width: 390px) {
-    .t-cta{
+    .t-cta {
         font-size: 0.5rem;
     }
 }
@@ -128,6 +144,7 @@ td{
     color: #181819;
     margin-block-end: 0em;
 }
+
 .form {
     padding: 1rem;
     background-color: #f9f7eb;
@@ -135,6 +152,7 @@ td{
     border-bottom-left-radius: 20px;
     box-shadow: 0 1px 2px 1px #e8e9ec;
 }
+
 .form-columns {
     display: flex;
 }
@@ -148,17 +166,21 @@ td{
     flex: 0 0 auto;
     width: 270px;
 }
+
 @media (max-width: 768px) {
     .form-columns {
         display: block;
     }
+
     .column-1 {
         width: 100%;
     }
+
     .column-2 {
         width: 100%;
     }
 }
+
 .txtarea {
     border: 2px solid rgb(216 216 216 / .4);
     border-radius: 12px;
@@ -215,6 +237,7 @@ td{
     cursor: pointer;
     margin-right: 10px;
 }
+
 .rank-wrapper-1[data-color="#23b54f"]:hover {
     background-color: rgba(35, 181, 79, 0.1);
     border-top-right-radius: 15px;
@@ -285,8 +308,6 @@ td{
     accent-color: #af1c6b;
 }
 
-
-
 /* Submit button styles */
 .submit-button {
     margin-top: 20px;
@@ -310,3 +331,81 @@ td{
     background-color: #697a89;
 }
 
+/* Comments  */
+
+.comment-container {
+    display: flex;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-bottom: 1px solid #f1f2f4;
+    background: #fff;
+}
+.list-title{
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 1rem;
+    color: #181819;
+}
+
+.rank-container {
+    flex: 0 0 auto;
+    width: 190px;
+    padding: 24px 0;
+}
+
+.comment-rank {
+    background: #fbe5e2;
+    color: #ffffff;
+    display: inline-block;
+    width: 120px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 50px;
+    text-align: center;
+    margin-left: 30px;
+    font-weight: 500;
+}
+
+.comment {
+    padding: 17px 30px 15px 0;
+    flex: 1 1 auto;
+}
+
+.comment-text {
+    word-break: break-word;
+    margin-bottom: 10px;
+}
+
+.comment-date {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center;
+}
+.rank-safe {
+    background-color: #4CAF50; /* green */
+    color: white;
+}
+
+.rank-neutral {
+    background-color: #9E9E9E; /* gray */
+    color: white;
+}
+
+.rank-useful {
+    background-color: #2196F3; /* blue */
+    color: white;
+}
+
+.rank-dangerous {
+    background-color: #F44336; /* red */
+    color: white;
+}
+
+.rank-unknown {
+    background-color: #607D8B; /* blue-gray */
+    color: white;
+}

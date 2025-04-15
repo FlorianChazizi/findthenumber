@@ -7,6 +7,7 @@ include 'helpers/calculate_danger_rate.php';
 include 'helpers/get_review_count.php';
 include 'helpers/get_last_review_date.php';
 include 'backend/post_comments.php';
+include 'backend/fetch_comments.php';
 
 $dangerRate = getDangerRate($conn, $number);
 $reviewCount = getReviewCount($conn, $number);
@@ -15,15 +16,18 @@ $lastReviewDate = getLastReviewDate($conn, $number);
 
 ?>
 
+
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>Number <?php echo htmlspecialchars($number); ?></title>
-    <script defer src="scripts/radiobuttons.js"></script>
 
     <link rel="stylesheet" href="styles/number.css">
     <link rel="stylesheet" href="styles/index.css">
+    <script defer src="scripts/radiobuttons.js"></script>
+    <!-- <script defer src="scripts/fetch_comments.js"></script> -->
+
 </head>
 
 <body>
@@ -149,38 +153,33 @@ $lastReviewDate = getLastReviewDate($conn, $number);
             <?php endif; ?>
         </div>
 
-    <!-- add comment -->
-    <div class="comment">
-    <div class="form-container">
-        <h2 class="form-title">Προσθήκη ενός σχολίου</h2>
-        <div class="form">
-            <form class="form-content" id="commentForm"  method="POST">
-                <div class="form-columns">
-                    <div class="column-1">
-                            <input type="hidden" name="id" value="<?php echo htmlspecialchars($data['id']); ?>">
+        <!-- add comment -->
+        <div class="comment">
+            <div class="form-container">
+                <h2 class="form-title">Προσθήκη ενός σχολίου</h2>
+                <div class="form">
+                    <form class="form-content" id="commentForm" method="POST">
+                        <div class="form-columns">
+                            <div class="column-1">
+                                <input type="hidden" name="id" value="<?php echo htmlspecialchars($data['id']); ?>">
 
-                        <textarea
-                            class="txtarea"
-                            id="txtarea"
-                            maxlength="200"
-                            rows="8"
-                            placeholder="Η εμπειρία σας με τον αριθμό <?php echo $number; ?>..."
-                            name="comment"
-                        ></textarea>
-                    </div>
-                    <div class="column-2">
-                        <div class="select-wrapper" id="rankOptions">
-                            <?php
-                            $rankOptions = [
-                                ['label' => 'Χρήσιμος', 'value' => 'useful', 'color' => '#23b54f'],
-                                ['label' => 'Ασφαλής', 'value' => 'safe', 'color' => '#4d9981'],
-                                ['label' => 'Ουδέτερος', 'value' => 'neutral', 'color' => '#169dc4'],
-                                ['label' => 'Ενοχλητικός', 'value' => 'annoying', 'color' => '#e6523e'],
-                                ['label' => 'Επικίνδυνος', 'value' => 'dangerous', 'color' => '#af1c6b'],
-                            ];
-                            foreach ($rankOptions as $index => $option) {
-                                $selected = $option['value'] === 'useful' ? 'selected' : '';
-                                echo "
+                                <textarea class="txtarea" id="txtarea" maxlength="200" rows="8"
+                                    placeholder="Η εμπειρία σας με τον αριθμό <?php echo $number; ?>..."
+                                    name="comment"></textarea>
+                            </div>
+                            <div class="column-2">
+                                <div class="select-wrapper" id="rankOptions">
+                                    <?php
+                                    $rankOptions = [
+                                        ['label' => 'Χρήσιμος', 'value' => 'useful', 'color' => '#23b54f'],
+                                        ['label' => 'Ασφαλής', 'value' => 'safe', 'color' => '#4d9981'],
+                                        ['label' => 'Ουδέτερος', 'value' => 'neutral', 'color' => '#169dc4'],
+                                        ['label' => 'Ενοχλητικός', 'value' => 'annoying', 'color' => '#e6523e'],
+                                        ['label' => 'Επικίνδυνος', 'value' => 'dangerous', 'color' => '#af1c6b'],
+                                    ];
+                                    foreach ($rankOptions as $index => $option) {
+                                        $selected = $option['value'] === 'useful' ? 'selected' : '';
+                                        echo "
                                 <div class='rank-wrapper-1 $selected' id='rank-wrapper-1' data-color='{$option['color']}' data-value='{$option['value']}'>
                                     <label class='rank-1'>{$option['label']}</label>
                                     <input 
@@ -193,31 +192,79 @@ $lastReviewDate = getLastReviewDate($conn, $number);
                                     >
                                 </div>
                                 ";
-                            }
-                            ?>
-                        </div>
+                                    }
+                                    ?>
+                                </div>
 
-                        <button 
-                            type="submit"
-                            class="submit-button"
-                            disabled
-                        >Υποβολή</button>
+                                <button type="submit" class="submit-button" disabled>Υποβολή</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- comment list -->
+            <div class="comment-list">
+                <h3 class="list-title">Σχόλια για τον αριθμό
+                    <?php echo $data['number']; ?>
+                </h3>
+                <div id="commentsContainer">
+                    <div id="comments">
+                        <?php if (empty($comments)): ?>
+                            <p>No comments yet.</p>
+                        <?php else: ?>
+                            <?php foreach ($comments as $comment): ?>
+                                <div class="comment-container">
+                                    <div class="rank-container">
+                                    <?php
+                                    $rank = htmlspecialchars($comment['rank']);
+                                    $rankClass = 'rank-default';
+
+                                    if ($rank === 'useful') {
+                                        $rankClass = 'rank-useful';
+                                    } elseif ($rank === 'safe') {
+                                        $rankClass = 'rank-safe';
+                                    } elseif ($rank === 'neutral') {
+                                        $rankClass = 'rank-neutral';
+                                    } elseif ($rank === 'annoying') {
+                                        $rankClass = 'rank-annoying';
+                                    } elseif ($rank === 'dangerous') {
+                                        $rankClass = 'rank-dangerous';
+                                    }
+                                    ?>
+                                        <strong class="comment-rank  <?= $rankClass ?>">
+                                            <?= htmlspecialchars($comment['rank'] ?? 'unknown') ?>
+                                        </strong>
+                                    </div>
+                                    <div class="comment">
+                                        <p class="comment-text">
+                                            <?= nl2br(htmlspecialchars($comment['comment'])) ?>
+                                        </p>
+                                        <div class="comment-date">
+                                            <small><?= htmlspecialchars($comment['created_at']) ?></small>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-</div> 
-    </div>
 
 
 
-    <!-- comment list -->
-    <div>
-        <p> here we display the comments </p>
-    </div>
 
-    
+
+
+
+
+
+
+
+
     <h1>Number: <?php echo htmlspecialchars($data['number']); ?></h1>
     <h2> ID of the number : <?php echo htmlspecialchars($data['id']); ?></h2>
     <p><strong>Views:</strong> <?php echo $data['views']; ?></p>
@@ -225,10 +272,8 @@ $lastReviewDate = getLastReviewDate($conn, $number);
     <p><strong>Updated At:</strong> <?php echo $data['updated_at']; ?></p>
     <p><strong>Last Time Viewed:</strong> <?php echo $data['last_time_viewed']; ?></p>
     <p><strong>Last Review:</strong> <?php echo $data['last_review'] ?: 'Never'; ?></p>
-  
+
     <a href="index.php">← Back</a>
 </body>
 
 </html>
-
-<?php $conn->close(); ?>
