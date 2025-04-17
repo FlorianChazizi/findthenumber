@@ -1,3 +1,22 @@
+
+@media (max-width: 768px) {
+    .main-wrapper{
+        margin-right: 0px;
+        margin-left: 0px;
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+    .content
+    .sidebar {
+        display: none;
+    }
+    .content{
+        width: 100%;
+    }
+    .number{
+        display: none;
+    }
+}
 .title-container {
     display: flex;
     justify-content: center;
@@ -81,6 +100,7 @@ td {
 
 .t-cta {
     position: relative;
+    display: flex;
     justify-content: center;
     align-items: right;
     font-weight: 700;
@@ -106,8 +126,10 @@ td {
     }
 
     .t-cta {
-        padding: 4px 8px;
-        font-size: 0.7rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
     }
 
     th {
@@ -408,4 +430,12 @@ td {
 .rank-unknown {
     background-color: #607D8B; /* blue-gray */
     color: white;
+}
+@media (max-width: 768px) {
+    .comment {
+        padding:  0px;
+        flex: 1 1 auto;
+    }
+    
+
 }

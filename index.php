@@ -21,7 +21,7 @@ include 'backend/fetch_annoying.php';
 
 </head>
 
-<body>
+<div>
     <!-- Header -->
     <div class="body-content">
         <div class="header-wrapper">
@@ -81,8 +81,9 @@ include 'backend/fetch_annoying.php';
                                     <p class="no-comment">No comments yet.</p>
                                 <?php endif; ?>
                             </div>
+                            </a>
                         <?php endwhile; ?>
-                    </a>
+                    
                 </div>
 
             <?php else: ?>
@@ -127,7 +128,6 @@ include 'backend/fetch_annoying.php';
             <?php endif; ?>
         </div>
     </div>
-    </div>
 
     <!-- numtable -->
     <div class="table-wrapper">
@@ -143,6 +143,7 @@ include 'backend/fetch_annoying.php';
         <!-- Content area that JS updates -->
         <div id="tab-content" class="tab-content"></div>
     </div>
+
 </body>
 
 </html>

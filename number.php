@@ -22,12 +22,11 @@ $lastReviewDate = getLastReviewDate($conn, $number);
 
 <head>
     <title>Number <?php echo htmlspecialchars($number); ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="styles/number.css">
     <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/number.css">
     <script defer src="scripts/radiobuttons.js"></script>
-    <!-- <script defer src="scripts/fetch_comments.js"></script> -->
-
 </head>
 
 <body>
