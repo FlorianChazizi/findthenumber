@@ -257,22 +257,36 @@ $lastReviewDate = getLastReviewDate($conn, $number);
 
 
 
+        <!-- Footer  -->
 
+    <div class="footer-wrapper">
+            <div class="footer-bg-wrapper">
+                <div class="footer-bg"></div>
+            </div>
 
+            <div class="footer">
+                <div class="footer-left">
+                <ul>
+                    <li>
+                        <a href="">Όροι και προϋποθέσεις</a>
+                    </li>
 
+                    <li>
+                    <a href="">Προστασία Προσωπικών Δεδομένων</a>
+                    </li>
 
+                    <li>
+                        <a href="">Συχνές ερωτήσεις</a>
+                    </li>
 
+                    <li>
+                        <a href="">Επικοινωνία</a>
+                    </li>
+                </ul>
+                </div>
 
-
-    <h1>Number: <?php echo htmlspecialchars($data['number']); ?></h1>
-    <h2> ID of the number : <?php echo htmlspecialchars($data['id']); ?></h2>
-    <p><strong>Views:</strong> <?php echo $data['views']; ?></p>
-    <p><strong>Created At:</strong> <?php echo $data['created_at']; ?></p>
-    <p><strong>Updated At:</strong> <?php echo $data['updated_at']; ?></p>
-    <p><strong>Last Time Viewed:</strong> <?php echo $data['last_time_viewed']; ?></p>
-    <p><strong>Last Review:</strong> <?php echo $data['last_review'] ?: 'Never'; ?></p>
-
-    <a href="index.php">← Back</a>
+            </div>
+        </div>
 </body>
 
 </html>
